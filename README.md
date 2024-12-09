@@ -46,6 +46,8 @@ This project uses a Makefile to simplify common development tasks. Here's an ove
 - make type-check: Runs the type checker (mypy) on your code.
 - make update-deps: Updates the project dependencies.
 - make clean: Removes the virtual environment and cleans up cache files.
+- make security-check: Checks security using Bandit.
+- make check-env: Checks your env file for missing keys.
 - make all: Runs install, lint, format, test, and type-check in sequence.
 - make watch-file file=filename: Watches and runs a file - like nodemon for Python.
 - make watch-test file=filename: Watches and runs tests on file changes.

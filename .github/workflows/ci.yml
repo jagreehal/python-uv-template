@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.11]
+        python-version: [3.12]
 
     steps:
       - name: Checkout repository
@@ -37,10 +37,6 @@ jobs:
       - name: Lint with ruff
         run: |
           uv run ruff check .
-
-      - name: Format check with black
-        run: |
-          uv run black --check .
 
       - name: Type check with mypy
         run: |

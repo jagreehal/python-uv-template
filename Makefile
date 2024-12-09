@@ -1,4 +1,4 @@
-.PHONY: install lint format test type-check update-deps clean watch-file watch-test
+.PHONY: install lint lint-fix format test type-check update-deps clean check-env security-check watch-file watch-test
 
 # Use Python 3.12
 PYTHON := python3.12
@@ -36,6 +36,11 @@ lint:
 	@echo "Running linter..."
 	@uv run ruff check .
 
+lint-fix:
+	@echo "Fixing lint issues..."
+	@uv run ruff check --fix .
+	@echo "Lint issues fixed."
+
 format:
 	@echo "Formatting code..."
 	@uv run ruff check --fix .
@@ -49,10 +54,21 @@ type-check:
 	@echo "Running type checker..."
 	@uv run mypy .
 
+security-check:
+	@echo "Running security checks..."
+	@uv run bandit -r src/ --exclude src/test_*.py
+	@echo "Security checks complete."
+
 update-deps:
 	@echo "Updating dependencies using uv..."
 	@uv pip install --upgrade -e ".[dev]"
 	@echo "Dependencies updated with uv."
+
+check-env:
+	@echo "Checking required environment variables..."
+	@if [ -z "$(DATABASE_URL)" ]; then echo "DATABASE_URL is not set!"; exit 1; fi
+	@if [ -z "$(SECRET_KEY)" ]; then echo "SECRET_KEY is not set!"; exit 1; fi
+	@echo "All required environment variables are set."
 
 clean:
 	@echo "Cleaning up virtual environment and cache..."
@@ -86,4 +102,4 @@ watch-test:
 		.
 
 # Default target
-all: install lint format test type-check update-deps
+all: update-deps install lint format test type-check security-check

@@ -41,12 +41,14 @@ This project uses a Makefile to simplify common development tasks. Here's an ove
 
 - make install: Sets up the virtual environment and installs all dependencies using uv.
 - make lint: Runs the linter (ruff) to check your code for potential issues.
-- make format: Formats your code using ruff and black.
+- make format: Formats your code using ruff.
 - make test: Runs your tests using pytest.
 - make type-check: Runs the type checker (mypy) on your code.
 - make update-deps: Updates the project dependencies.
 - make clean: Removes the virtual environment and cleans up cache files.
 - make all: Runs install, lint, format, test, and type-check in sequence.
+- make watch-file file=filename: Watches and runs a file - like nodemon for Python.
+- make watch-test file=filename: Watches and runs tests on file changes.
 
 ## Development Workflow
 

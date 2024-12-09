@@ -1,7 +1,7 @@
-.PHONY: install lint format test type-check update-deps clean
+.PHONY: install lint format test type-check update-deps clean watch-file watch-test
 
-# Use Python 3.11 explicitly
-PYTHON := python3.11
+# Use Python 3.12
+PYTHON := python3.12
 VENV := .venv
 BIN := $(VENV)/bin
 
@@ -39,7 +39,7 @@ lint:
 format:
 	@echo "Formatting code..."
 	@uv run ruff check --fix .
-	@uv run black .
+	@uv run ruff format .
 
 test:
 	@echo "Running tests..."
@@ -60,6 +60,30 @@ clean:
 	@find . -type d -name "__pycache__" -exec rm -rf {} +
 	@find . -type f -name "*.py[co]" -delete
 	@echo "Cleaned up environment and cache files."
+
+watch-file:
+	@if [ -z "$(file)" ]; then \
+		echo "Usage: make watch-file file=<file_path>"; \
+		exit 1; \
+	fi; \
+	echo "Watching file: $(file) for changes..."; \
+	$(BIN)/watchmedo shell-command \
+		--patterns="$(file)" \
+		--recursive \
+		--command='echo "File $(file) changed! Running action..."; $(BIN)/python $(file)' \
+		.
+
+watch-test:
+	@if [ -z "$(file)" ]; then \
+		echo "Usage: make watch-test file=<test_file_path>"; \
+		exit 1; \
+	fi; \
+	echo "Watching test file: $(file) for changes..."; \
+	$(BIN)/watchmedo shell-command \
+		--patterns="$(file)" \
+		--recursive \
+		--command='echo "Test file $(file) changed! Running tests..."; $(BIN)/pytest $(file)' \
+		.
 
 # Default target
 all: install lint format test type-check update-deps

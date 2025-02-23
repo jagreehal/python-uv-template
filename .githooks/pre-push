@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Get the current working directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$(dirname "$DIR")"
+
+echo "Running pre-push format check..."
+
+# Run the format command
+make format
+
+# Check if there are any unstaged changes after formatting
+if git diff --quiet; then
+    echo "Code formatting check passed!"
+    exit 0
+else
+    echo "Error: Code formatting resulted in changes."
+    echo "Please stage and commit the following changes:"
+    git diff --name-only
+    exit 1
+fi 

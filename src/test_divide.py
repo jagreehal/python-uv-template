@@ -1,4 +1,5 @@
 import pytest
+
 from divide import DivideParams, DivisionError, divide
 
 
@@ -10,7 +11,7 @@ def test_divide_two_numbers():
 def test_division_by_zero():
     with pytest.raises(DivisionError) as exc_info:
         divide(DivideParams(dividend=10, divisor=0))
-    
+
     assert str(exc_info.value) == "Cannot divide by zero"
     assert exc_info.value.dividend == 10
     assert exc_info.value.divisor == 0

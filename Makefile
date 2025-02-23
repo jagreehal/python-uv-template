@@ -23,12 +23,12 @@ lint:
 
 lint-fix:
 	@echo "Fixing lint issues..."
-	@uv run ruff check --fix .
+	@uv run ruff check --fix --unsafe-fixes .
 	@echo "Lint issues fixed."
 
 format:
 	@echo "Formatting code..."
-	@uv run ruff check --fix .
+	@uv run ruff check --fix --unsafe-fixes .
 	@uv run ruff format .
 
 test:

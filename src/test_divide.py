@@ -1,32 +1,27 @@
-from divide import DivideParams, divide
-from result import Failure, Success
+import pytest
+from divide import DivideParams, DivisionError, divide
 
 
 def test_divide_two_numbers():
     result = divide(DivideParams(dividend=10, divisor=2))
-    assert isinstance(result, Success)
-    assert result.success is True
-    assert result.data == 5
+    assert result == 5
 
 
 def test_division_by_zero():
-    result = divide(DivideParams(dividend=10, divisor=0))
-    assert isinstance(result, Failure)
-    assert result.success is False
-    assert result.error.code == "DIVISION_BY_ZERO"
-    assert result.error.message == "Cannot divide by zero"
-    assert result.error.details == {"dividend": 10, "divisor": 0}
+    with pytest.raises(DivisionError) as exc_info:
+        divide(DivideParams(dividend=10, divisor=0))
+    
+    assert str(exc_info.value) == "Cannot divide by zero"
+    assert exc_info.value.dividend == 10
+    assert exc_info.value.divisor == 0
+    assert exc_info.value.details == {"dividend": 10, "divisor": 0}
 
 
 def test_divide_negative_numbers():
     result = divide(DivideParams(dividend=-10, divisor=2))
-    assert isinstance(result, Success)
-    assert result.success is True
-    assert result.data == -5
+    assert result == -5
 
 
 def test_fractional_results():
     result = divide(DivideParams(dividend=10, divisor=3))
-    assert isinstance(result, Success)
-    assert result.success is True
-    assert round(result.data, 4) == 3.3333
+    assert round(result, 4) == 3.3333

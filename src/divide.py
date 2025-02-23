@@ -1,6 +1,14 @@
 from pydantic import BaseModel
 
-from result import ErrorDetails, Failure, Result, Success
+
+class DivisionError(Exception):
+    """Custom exception for division errors with additional context."""
+    def __init__(self, dividend: float, divisor: float, message: str):
+        self.dividend = dividend
+        self.divisor = divisor
+        self.message = message
+        self.details = {"dividend": dividend, "divisor": divisor}
+        super().__init__(message)
 
 
 class DivideParams(BaseModel):
@@ -8,14 +16,23 @@ class DivideParams(BaseModel):
     divisor: float
 
 
-def divide(params: DivideParams) -> Result:
+def divide(params: DivideParams) -> float:
+    """Divide two numbers.
+    
+    Args:
+        params: DivideParams containing dividend and divisor
+        
+    Returns:
+        float: Result of division
+        
+    Raises:
+        DivisionError: If divisor is zero
+    """
     if params.divisor == 0:
-        return Failure(
-            error=ErrorDetails(
-                code="DIVISION_BY_ZERO",
-                message="Cannot divide by zero",
-                details={"dividend": params.dividend, "divisor": params.divisor},
-            )
+        raise DivisionError(
+            dividend=params.dividend,
+            divisor=params.divisor,
+            message="Cannot divide by zero"
         )
-
-    return Success(data=params.dividend / params.divisor)
+    
+    return params.dividend / params.divisor

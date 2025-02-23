@@ -4,33 +4,18 @@
 PYTHON := python3.12
 VENV := .venv
 BIN := $(VENV)/bin
+UV := $(BIN)/uv
 
 install:
-	@if [ ! -d "$(VENV)" ]; then \
-		echo "Virtual environment not found, creating..."; \
-		$(PYTHON) -m venv $(VENV); \
-		echo "Virtual environment created."; \
-		echo "Please activate the virtual environment before proceeding with installation:"; \
-		echo "  source $(VENV)/bin/activate"; \
-	else \
-		if [ -z "$$VIRTUAL_ENV" ]; then \
-			echo "Virtual environment exists but is not activated."; \
-			echo "Please activate the virtual environment first:"; \
-			echo "  source $(VENV)/bin/activate"; \
-			exit 1; \
-		fi; \
-	fi
+	@echo "Installing dependencies using uv..."
+	@uv venv
+	@uv pip install -e ".[dev]"
+	@echo "Dependencies installed."
 
-	# Check if uv is installed; if not, install it
-	@if [ ! -f "$(UV)" ]; then \
-		echo "uv not found, installing it..."; \
-		$(VENV)/bin/pip install uv; \
-	fi
-
-	# Install dependencies using uv
-	@echo "Installing dependencies using uv..."; \
-	$(UV) pip install -e ".[dev]"; \
-	echo "Dependencies installed."
+install-extras:
+	@echo "Installing extras using uv..."; \
+	$(UV) pip install -e ".[logging,debug]"; \
+	echo "Extras installed."
 
 lint:
 	@echo "Running linter..."
@@ -102,4 +87,4 @@ watch-test:
 		.
 
 # Default target
-all: update-deps install lint format test type-check security-check
+all: update-deps install install-extras lint format test type-check security-check

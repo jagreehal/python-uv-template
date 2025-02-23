@@ -40,6 +40,8 @@ A modern Python project template using [uv](https://github.com/astral-sh/uv) for
   pip install uv
   ```
 
+- (Optional) Codecov token for coverage reporting
+
 ## Quick Start
 
 1. Use this template:
@@ -55,7 +57,21 @@ A modern Python project template using [uv](https://github.com/astral-sh/uv) for
    make install
    ```
 
-3. (Optional) Install logging and debugging extras:
+3. (Optional) Configure Codecov:
+
+   - Sign up at [Codecov](https://codecov.io) with your GitHub account
+   - Add your repository to Codecov
+   - Get your repository upload token
+   - Add the token to your GitHub repository:
+     ```bash
+     # In your GitHub repository:
+     # Settings -> Secrets and variables -> Actions
+     # Add new repository secret:
+     # Name: CODECOV_TOKEN
+     # Value: your-codecov-token
+     ```
+
+4. (Optional) Install logging and debugging extras:
 
    ```bash
    make install-extras
@@ -547,3 +563,46 @@ indent-style = "space"
 ## License
 
 This project is licensed under the MIT License.
+
+## CI/CD Pipeline
+
+This template includes a GitHub Actions workflow that:
+
+1. Runs on push to main and pull requests
+2. Performs the following checks:
+   - Installs dependencies using uv
+   - Runs code formatting and linting
+   - Runs type checking
+   - Runs tests with coverage
+   - Uploads coverage to Codecov (if token is configured)
+
+### CI/CD Configuration
+
+The pipeline is configured in `.github/workflows/ci.yml` and includes:
+
+- Python 3.12 environment
+- uv for dependency management
+- Ruff for formatting and linting
+- MyPy for type checking
+- Pytest with coverage reporting
+- Codecov integration (optional)
+
+The pipeline is designed to:
+
+- Pass if all code quality checks succeed
+- Continue even if Codecov upload fails
+- Provide detailed feedback on any issues
+
+### Coverage Reporting
+
+Coverage reporting is handled through:
+
+1. Pytest-cov for generating coverage data
+2. Codecov for hosting and visualizing coverage
+3. GitHub Actions for automated uploads
+
+If you don't need Codecov integration:
+
+- The pipeline will still run and pass
+- Coverage reports will still be generated locally
+- You can remove the Codecov upload step from the workflow

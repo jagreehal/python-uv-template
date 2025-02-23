@@ -1,7 +1,7 @@
 # Python UV Template
 
 [![CI Status](https://github.com/jagreehal/python-uv-template/actions/workflows/ci.yml/badge.svg)](https://github.com/jagreehal/python-uv-template/actions)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/jagreehal/python-uv-template/actions)
+[![codecov](https://codecov.io/gh/jagreehal/python-uv-template/branch/main/graph/badge.svg)](https://codecov.io/gh/jagreehal/python-uv-template)
 [![Python Version](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type Checker: mypy](https://img.shields.io/badge/type%20checker-mypy-blue.svg)](https://github.com/python/mypy)
@@ -20,7 +20,8 @@ A modern Python project template using [uv](https://github.com/astral-sh/uv) for
   - [Pytest](https://docs.pytest.org/) for testing with coverage reporting
   - [Bandit](https://github.com/PyCQA/bandit) for security checks
 - 📦 Modern project structure with `pyproject.toml`
-- 🔄 GitHub Actions CI pipeline included
+- 🔄 GitHub Actions CI pipeline with Codecov integration
+- 🔒 Git pre-push hooks for quality assurance
 - 📝 Jupyter Notebook support
 - 👀 File watching for development
 - 🛠️ Comprehensive Makefile for common tasks
@@ -137,7 +138,7 @@ make install-extras
 | `make format`                              | Format code and fix lint issues | Before committing changes                                           |
 | `make lint`                                | Check code with ruff            | To verify code quality                                              |
 | `make lint-fix`                            | Auto-fix linting issues         | To automatically fix style issues                                   |
-| `make test`                                | Run tests with coverage         | After making changes (generates HTML coverage report)               |
+| `make test`                                | Run tests with coverage         | After making changes (generates coverage reports)                   |
 | `make type-check`                          | Run MyPy type checker           | To verify type safety                                               |
 | `make security-check`                      | Run security audit              | Before deployments                                                  |
 | `make update-deps`                         | Update dependencies             | When you want to upgrade packages                                   |
@@ -158,6 +159,60 @@ make watch-test file=src/test_divide.py
 
 # Watch multiple files (use appropriate glob pattern)
 make watch-file file=src/*.py
+```
+
+## Git Hooks
+
+The template includes pre-push hooks that automatically run quality checks before allowing code to be pushed. This ensures that only high-quality code makes it to the repository.
+
+### Pre-Push Checks
+
+The following checks are run automatically before each push:
+
+1. Code formatting (ruff)
+2. Linting (ruff)
+3. Type checking (mypy)
+4. Tests with coverage (pytest)
+
+If any check fails:
+
+- The push will be blocked
+- You'll see detailed error messages
+- You'll need to fix the issues before pushing
+
+### Hook Installation
+
+The hooks are automatically installed when you clone the repository. They're stored in the `.githooks` directory and configured via:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+### Skipping Hooks
+
+In rare cases where you need to skip the pre-push hooks (not recommended), you can use:
+
+```bash
+git push --no-verify
+```
+
+## Code Coverage
+
+This project uses Codecov for tracking code coverage:
+
+- Coverage reports are generated automatically during CI runs
+- Coverage data is uploaded to [Codecov](https://codecov.io)
+- Coverage badge in README shows current coverage status
+- Detailed coverage reports are available on the Codecov dashboard
+
+### Local Coverage Reports
+
+To view coverage locally:
+
+```bash
+make test
+# Coverage report will be displayed in terminal
+# XML report will be generated at coverage.xml
 ```
 
 ## Project Structure

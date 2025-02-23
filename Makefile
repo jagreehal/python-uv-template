@@ -33,7 +33,7 @@ format:
 
 test:
 	@echo "Running tests..."
-	@uv run pytest
+	@uv run pytest --cov=src --cov-report=xml --cov-report=term-missing
 
 type-check:
 	@echo "Running type checker..."

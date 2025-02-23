@@ -1,7 +1,6 @@
 # Python UV Template
 
 [![CI Status](https://github.com/jagreehal/python-uv-template/actions/workflows/ci.yml/badge.svg)](https://github.com/jagreehal/python-uv-template/actions)
-[![codecov](https://codecov.io/gh/jagreehal/python-uv-template/branch/main/graph/badge.svg)](https://codecov.io/gh/jagreehal/python-uv-template)
 [![Python Version](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type Checker: mypy](https://img.shields.io/badge/type%20checker-mypy-blue.svg)](https://github.com/python/mypy)
@@ -9,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Dependency Manager: uv](https://img.shields.io/badge/dependency%20manager-uv-purple.svg)](https://github.com/astral-sh/uv)
 
-A production-ready Python project template powered by modern tools and best practices. Built around [uv](https://github.com/astral-sh/uv), my choice of Python package installer and resolver, this template streamlines Python development with:
+A production-ready Python project template powered by modern tools and best practices. Built around [uv](https://github.com/astral-sh/uv), the blazingly fast Python package installer and resolver, this template streamlines Python development with:
 
 - **Lightning-Fast Dependency Management**: Uses `uv` for up to 10x faster package operations than pip
 - **Zero-Config Quality Tools**: Pre-configured Ruff, MyPy, and Pytest setup works out of the box
@@ -29,7 +28,7 @@ Perfect for both new projects and as a reference for modernizing existing Python
   - [Pytest](https://docs.pytest.org/) for testing with coverage reporting
   - [Bandit](https://github.com/PyCQA/bandit) for security checks
 - 📦 Modern project structure with `pyproject.toml`
-- 🔄 GitHub Actions CI pipeline with Codecov integration
+- 🔄 GitHub Actions CI pipeline
 - 🔒 Git pre-push hooks for quality assurance
 - 📝 Jupyter Notebook support
 - 👀 File watching for development
@@ -49,8 +48,6 @@ Perfect for both new projects and as a reference for modernizing existing Python
   pip install uv
   ```
 
-- (Optional) Codecov token for coverage reporting
-
 ## Quick Start
 
 1. Use this template:
@@ -66,22 +63,7 @@ Perfect for both new projects and as a reference for modernizing existing Python
    make install
    ```
 
-3. (Optional) Configure Codecov:
-
-   - Sign up at [Codecov](https://codecov.io) with your GitHub account
-   - Add your repository to Codecov
-   - Get your repository upload token
-   - Add the token to your GitHub repository:
-
-     ```bash
-     # In your GitHub repository:
-     # Settings -> Secrets and variables -> Actions
-     # Add new repository secret:
-     # Name: CODECOV_TOKEN
-     # Value: your-codecov-token
-     ```
-
-4. (Optional) Install logging and debugging extras:
+3. Install logging and debugging extras (optional):
 
    ```bash
    make install-extras
@@ -222,24 +204,50 @@ In rare cases where you need to skip the pre-push hooks (not recommended), you c
 git push --no-verify
 ```
 
-## Code Coverage
+## CI/CD Pipeline
 
-This project uses Codecov for tracking code coverage:
+This template includes a GitHub Actions workflow that:
 
-- Coverage reports are generated automatically during CI runs
-- Coverage data is uploaded to [Codecov](https://codecov.io)
-- Coverage badge in README shows current coverage status
-- Detailed coverage reports are available on the Codecov dashboard
+1. Runs on push to main and pull requests
+2. Performs the following checks:
+   - Installs dependencies using uv
+   - Runs code formatting and linting
+   - Runs type checking
+   - Runs tests with coverage
 
-### Local Coverage Reports
+### CI/CD Configuration
 
-To view coverage locally:
+The pipeline is configured in `.github/workflows/ci.yml` and includes:
+
+- Python 3.12 environment
+- uv for dependency management
+- Ruff for formatting and linting
+- MyPy for type checking
+- Pytest with coverage reporting
+
+The pipeline is designed to:
+
+- Pass if all code quality checks succeed
+- Provide detailed feedback on any issues
+
+### Coverage Reporting
+
+Test coverage is handled through pytest-cov, which generates both terminal and XML reports:
 
 ```bash
 make test
-# Coverage report will be displayed in terminal
-# XML report will be generated at coverage.xml
+# This will:
+# - Run all tests
+# - Show coverage in terminal with missing lines
+# - Generate coverage.xml for CI/CD or other tools
 ```
+
+The coverage report shows:
+
+- Overall coverage percentage
+- Line-by-line coverage details
+- Missing lines that need test coverage
+- Branch coverage statistics
 
 ## Project Structure
 
@@ -573,46 +581,3 @@ indent-style = "space"
 ## License
 
 This project is licensed under the MIT License.
-
-## CI/CD Pipeline
-
-This template includes a GitHub Actions workflow that:
-
-1. Runs on push to main and pull requests
-2. Performs the following checks:
-   - Installs dependencies using uv
-   - Runs code formatting and linting
-   - Runs type checking
-   - Runs tests with coverage
-   - Uploads coverage to Codecov (if token is configured)
-
-### CI/CD Configuration
-
-The pipeline is configured in `.github/workflows/ci.yml` and includes:
-
-- Python 3.12 environment
-- uv for dependency management
-- Ruff for formatting and linting
-- MyPy for type checking
-- Pytest with coverage reporting
-- Codecov integration (optional)
-
-The pipeline is designed to:
-
-- Pass if all code quality checks succeed
-- Continue even if Codecov upload fails
-- Provide detailed feedback on any issues
-
-### Coverage Reporting
-
-Coverage reporting is handled through:
-
-1. Pytest-cov for generating coverage data
-2. Codecov for hosting and visualizing coverage
-3. GitHub Actions for automated uploads
-
-If you don't need Codecov integration:
-
-- The pipeline will still run and pass
-- Coverage reports will still be generated locally
-- You can remove the Codecov upload step from the workflow

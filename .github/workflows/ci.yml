@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2 # Recommended for better coverage reporting
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -36,14 +34,3 @@ jobs:
 
       - name: Run tests with coverage
         run: make test
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        continue-on-error: true # Don't fail the build if coverage upload fails
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        with:
-          files: ./coverage.xml
-          fail_ci_if_error: false # Don't fail if coverage upload has issues
-          verbose: true
-          token: ${{ secrets.CODECOV_TOKEN }}

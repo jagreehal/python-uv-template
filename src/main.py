@@ -1,4 +1,4 @@
-from divide import DivideParams, divide
+from .divide import DivideParams, divide
 
 if __name__ == "__main__":
     result = divide(DivideParams(dividend=10, divisor=2))

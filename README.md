@@ -76,14 +76,11 @@ Perfect for both new projects and as a reference for modernizing existing Python
 ```bash
 # Start development
 make install
-
 # Format and lint your code
 make format
 make lint
-
 # Run tests
 make test
-
 # Watch a file during development
 make watch-file file=src/main.py
 ```
@@ -93,10 +90,8 @@ make watch-file file=src/main.py
 ```bash
 # Create a new test file
 touch src/test_divide.py
-
 # Watch tests during development
 make watch-test file=src/test_divide.py
-
 # Run all tests with coverage
 make test
 ```
@@ -109,7 +104,6 @@ make format
 make lint
 make type-check
 make security-check
-
 # Or run everything at once
 make all
 ```
@@ -120,7 +114,6 @@ make all
 # Create a .env file
 echo "DATABASE_URL=postgresql://localhost:5432/db" > .env
 echo "SECRET_KEY=your-secret-key" >> .env
-
 # Verify environment
 make check-env
 ```
@@ -132,39 +125,36 @@ make check-env
 # 1. Add to pyproject.toml
 # 2. Update environment
 make update-deps
-
 # Install optional extras
 make install-extras
 ```
 
 ## Development Commands
 
-| Command                                    | Description                     | When to Use                                                         |
-| ------------------------------------------ | ------------------------------- | ------------------------------------------------------------------- |
-| `make install`                             | Install dependencies            | Initial setup and after pulling changes                             |
-| `make install-extras`                      | Install optional packages       | When you need logging (loguru) or debugging (icecream)              |
-| `make format`                              | Format code and fix lint issues | Before committing changes                                           |
-| `make lint`                                | Check code with ruff            | To verify code quality                                              |
-| `make lint-fix`                            | Auto-fix linting issues         | To automatically fix style issues                                   |
-| `make test`                                | Run tests with coverage         | After making changes (generates coverage reports)                   |
-| `make type-check`                          | Run MyPy type checker           | To verify type safety                                               |
-| `make security-check`                      | Run security audit              | Before deployments                                                  |
-| `make update-deps`                         | Update dependencies             | When you want to upgrade packages                                   |
-| `make check-env`                           | Verify environment variables    | Before running the application                                      |
-| `make watch-file file=src/your_script.py`  | Auto-run file on changes        | During active development (replace your_script.py with target file) |
-| `make watch-test file=src/test_example.py` | Auto-run tests on changes       | During TDD (replace test_example.py with target test file)          |
-| `make clean`                               | Remove generated files          | To start fresh                                                      |
-| `make all`                                 | Run complete pipeline           | Before pushing changes                                              |
+| Command | Description | When to Use |
+| --- | --- | --- |
+| `make install` | Install dependencies | Initial setup and after pulling changes |
+| `make install-extras` | Install optional packages | When you need logging (loguru) or debugging (icecream) |
+| `make format` | Format code and fix lint issues | Before committing changes |
+| `make lint` | Check code with ruff | To verify code quality |
+| `make lint-fix` | Auto-fix linting issues | To automatically fix style issues |
+| `make test` | Run tests with coverage | After making changes (generates coverage reports) |
+| `make type-check` | Run MyPy type checker | To verify type safety |
+| `make security-check` | Run security audit | Before deployments |
+| `make update-deps` | Update dependencies | When you want to upgrade packages |
+| `make check-env` | Verify environment variables | Before running the application |
+| `make watch-file file=src/your_script.py` | Auto-run file on changes | During active development (replace your_script.py with target file) |
+| `make watch-test file=src/test_example.py` | Auto-run tests on changes | During TDD (replace test_example.py with target test file) |
+| `make clean` | Remove generated files | To start fresh |
+| `make all` | Run complete pipeline | Before pushing changes |
 
 ### Watch Commands Examples
 
 ```bash
 # Watch and run a specific Python file
 make watch-file file=src/main.py
-
 # Watch and run a specific test file
 make watch-test file=src/test_divide.py
-
 # Watch multiple files (use appropriate glob pattern)
 make watch-file file=src/*.py
 ```
@@ -256,22 +246,21 @@ The coverage report shows:
 ├── src/                           # Source code directory
 │   ├── divide.py                  # Division logic with error handling
 │   ├── main.py                    # Main application entry point
-│   └── test_divide.py            # Tests with pytest examples
+│   └── test_divide.py             # Tests with pytest examples
 ├── .github/                       # GitHub Actions workflows
 │   └── workflows/
-│       └── ci.yml                # CI pipeline configuration
-├── pyproject.toml                # Project configuration and dependencies
-├── Makefile                      # Development automation
-├── README.md                     # Project documentation
-├── LICENSE                       # MIT License
-├── example.ipynb                 # Example Jupyter notebook
-└── uv.lock                       # Lock file for dependencies
-
+│       └── ci.yml                 # CI pipeline configuration
+├── pyproject.toml                 # Project configuration and dependencies
+├── Makefile                       # Development automation
+├── README.md                      # Project documentation
+├── LICENSE                        # MIT License
+├── example.ipynb                  # Example Jupyter notebook
+└── uv.lock                        # Lock file for dependencies
 # Generated directories (not in repository)
-├── .venv/                        # Virtual environment (generated)
-├── htmlcov/                      # Test coverage reports (generated)
-├── .mypy_cache/                  # Type checking cache (generated)
-└── .pytest_cache/               # Pytest cache (generated)
+├── .venv/                         # Virtual environment (generated)
+├── htmlcov/                       # Test coverage reports (generated)
+├── .mypy_cache/                   # Type checking cache (generated)
+└── .pytest_cache/                 # Pytest cache (generated)
 ```
 
 ## Example Code
@@ -316,7 +305,6 @@ def divide(params: DivideParams) -> float:
 def test_division_by_zero():
     with pytest.raises(DivisionError) as exc_info:
         divide(DivideParams(dividend=10, divisor=0))
-
     assert str(exc_info.value) == "Cannot divide by zero"
     assert exc_info.value.details == {"dividend": 10, "divisor": 0}
 ```
@@ -364,19 +352,15 @@ make check-env
 ### Customising the Template
 
 1. Update `pyproject.toml`:
-
    - Change project name, version, and description
    - Modify dependencies as needed
    - Adjust tool configurations:
      - Ruff: Linting rules and formatting options
      - MyPy: Type checking strictness
      - Pytest: Test configuration and coverage settings
-
 2. Update CI Pipeline:
-
    - Modify `.github/workflows/ci.yml` for your needs
    - Add/remove steps as required
-
 3. Extend Makefile:
    - Add custom commands for your workflow
    - Modify existing commands as needed
@@ -522,7 +506,6 @@ We welcome contributions! Here's how you can help:
    ```
 
 2. Make your changes
-
 3. Ensure all checks pass:
 
    ```bash
@@ -567,7 +550,6 @@ For detailed style configuration, see:
 [tool.ruff]
 line-length = 120
 target-version = "py312"
-
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"

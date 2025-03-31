@@ -1,4 +1,4 @@
-.PHONY: install lint lint-fix format test type-check update-deps clean check-env security-check watch-file watch-test
+.PHONY: install lint lint-fix format test type-check update-deps clean check-env security-check watch-file watch-test test-watch
 
 # Use Python 3.12
 PYTHON := python3.12
@@ -33,7 +33,11 @@ format:
 
 test:
 	@echo "Running tests..."
-	@uv run pytest --cov=src --cov-report=xml --cov-report=term-missing
+	@uv run pytest --cov=src --cov-report=xml --cov-report=term-missing --cov-report=html
+
+test-watch:
+	@echo "Running tests in watch mode..."
+	@uv run pytest-watch -- --cov=src --cov-report=term-missing
 
 type-check:
 	@echo "Running type checker..."

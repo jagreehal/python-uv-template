@@ -25,11 +25,10 @@ Perfect for both new projects and as a reference for modernizing existing Python
 - 🔍 Code quality tools pre-configured:
   - [Ruff](https://github.com/astral-sh/ruff) for lightning-fast linting and formatting
   - [MyPy](https://mypy.readthedocs.io/) for static type checking
-  - [Pytest](https://docs.pytest.org/) for testing with coverage reporting
+  - [Pytest](https://docs.pytest.org/) with async and mock support
   - [Bandit](https://github.com/PyCQA/bandit) for security checks
 - 📦 Modern project structure with `pyproject.toml`
-- 🔄 GitHub Actions CI pipeline
-- 🔒 Git pre-push hooks for quality assurance
+- 🔄 GitHub Actions CI pipeline with merge checks
 - 📝 Jupyter Notebook support
 - 👀 File watching for development
 - 🛠️ Comprehensive Makefile for common tasks
@@ -91,7 +90,7 @@ make watch-file file=src/main.py
 # Create a new test file
 touch src/test_divide.py
 # Watch tests during development
-make watch-test file=src/test_divide.py
+make test-watch file=src/test_divide.py
 # Run all tests with coverage
 make test
 ```
@@ -131,22 +130,22 @@ make install-extras
 
 ## Development Commands
 
-| Command | Description | When to Use |
-| --- | --- | --- |
-| `make install` | Install dependencies | Initial setup and after pulling changes |
-| `make install-extras` | Install optional packages | When you need logging (loguru) or debugging (icecream) |
-| `make format` | Format code and fix lint issues | Before committing changes |
-| `make lint` | Check code with ruff | To verify code quality |
-| `make lint-fix` | Auto-fix linting issues | To automatically fix style issues |
-| `make test` | Run tests with coverage | After making changes (generates coverage reports) |
-| `make type-check` | Run MyPy type checker | To verify type safety |
-| `make security-check` | Run security audit | Before deployments |
-| `make update-deps` | Update dependencies | When you want to upgrade packages |
-| `make check-env` | Verify environment variables | Before running the application |
-| `make watch-file file=src/your_script.py` | Auto-run file on changes | During active development (replace your_script.py with target file) |
-| `make watch-test file=src/test_example.py` | Auto-run tests on changes | During TDD (replace test_example.py with target test file) |
-| `make clean` | Remove generated files | To start fresh |
-| `make all` | Run complete pipeline | Before pushing changes |
+| Command                                    | Description                     | When to Use                                                |
+| ------------------------------------------ | ------------------------------- | ---------------------------------------------------------- |
+| `make install`                             | Install dependencies            | Initial setup and after pulling changes                    |
+| `make install-extras`                      | Install optional packages       | When you need logging (loguru) or debugging (icecream)     |
+| `make format`                              | Format code and fix lint issues | Before creating a pull request                             |
+| `make lint`                                | Check code with ruff            | To verify code quality locally                             |
+| `make lint-fix`                            | Auto-fix linting issues         | To automatically fix style issues                          |
+| `make test`                                | Run tests with coverage         | After making changes (generates coverage reports)          |
+| `make test-watch file=src/test_example.py` | Auto-run tests on changes       | During TDD (replace test_example.py with target test file) |
+| `make type-check`                          | Run MyPy type checker           | To verify type safety locally                              |
+| `make security-check`                      | Run security audit              | Before deployments                                         |
+| `make update-deps`                         | Update dependencies             | When you want to upgrade packages                          |
+| `make check-env`                           | Verify environment variables    | Before running the application                             |
+| `make watch-file file=src/your_script.py`  | Auto-run file on changes        | During active development                                  |
+| `make clean`                               | Remove generated files          | To start fresh                                             |
+| `make all`                                 | Run complete pipeline           | To verify all checks locally                               |
 
 ### Watch Commands Examples
 
@@ -159,85 +158,50 @@ make watch-test file=src/test_divide.py
 make watch-file file=src/*.py
 ```
 
-## Git Hooks
+## Quality Assurance
 
-The template includes pre-push hooks that automatically run quality checks before allowing code to be pushed. This ensures that only high-quality code makes it to the repository.
+This template follows a "commit early, commit often" philosophy while maintaining code quality through CI/CD:
 
-### Pre-Push Checks
+### Local Development
 
-The following checks are run automatically before each push:
+- Developers can commit and push freely to feature branches
+- Local quality tools are available but not enforced:
+  ```bash
+  make format  # Format when ready
+  make lint    # Check for issues
+  make test    # Run tests
+  ```
+- Use `make all` to run all checks locally before creating a PR
 
-1. Code formatting (ruff)
-2. Linting (ruff)
-3. Type checking (mypy)
-4. Tests with coverage (pytest)
+### CI/CD Pipeline
 
-If any check fails:
+The template includes a robust GitHub Actions workflow that:
 
-- The push will be blocked
-- You'll see detailed error messages
-- You'll need to fix the issues before pushing
+1. Triggers on:
 
-### Hook Installation
+   - Pull requests to main
+   - Push to main
 
-The hooks are automatically installed when you clone the repository. They're stored in the `.githooks` directory and configured via:
+2. Performs automated checks:
 
-```bash
-git config core.hooksPath .githooks
-```
+   - Dependency installation
+   - Code formatting verification
+   - Linting
+   - Type checking
+   - Test coverage
+   - Security scanning
 
-### Skipping Hooks
+3. Merge Protection:
+   - All checks must pass before merging to main
+   - Code review required (configurable)
+   - Up-to-date branch required
 
-In rare cases where you need to skip the pre-push hooks (not recommended), you can use:
+This approach ensures:
 
-```bash
-git push --no-verify
-```
-
-## CI/CD Pipeline
-
-This template includes a GitHub Actions workflow that:
-
-1. Runs on push to main and pull requests
-2. Performs the following checks:
-   - Installs dependencies using uv
-   - Runs code formatting and linting
-   - Runs type checking
-   - Runs tests with coverage
-
-### CI/CD Configuration
-
-The pipeline is configured in `.github/workflows/ci.yml` and includes:
-
-- Python 3.12 environment
-- uv for dependency management
-- Ruff for formatting and linting
-- MyPy for type checking
-- Pytest with coverage reporting
-
-The pipeline is designed to:
-
-- Pass if all code quality checks succeed
-- Provide detailed feedback on any issues
-
-### Coverage Reporting
-
-Test coverage is handled through pytest-cov, which generates both terminal and XML reports:
-
-```bash
-make test
-# This will:
-# - Run all tests
-# - Show coverage in terminal with missing lines
-# - Generate coverage.xml for CI/CD or other tools
-```
-
-The coverage report shows:
-
-- Overall coverage percentage
-- Line-by-line coverage details
-- Missing lines that need test coverage
-- Branch coverage statistics
+- Developers can work freely on their branches
+- Code quality is maintained at the repository level
+- Main branch always contains verified code
+- No interruption to local development workflow
 
 ## Project Structure
 
@@ -325,6 +289,9 @@ Development (installed with `make install`):
 - `ruff`: For linting and formatting
 - `mypy`: For type checking
 - `pytest` & `pytest-cov`: For testing and coverage
+- `pytest-asyncio`: For testing async code
+- `pytest-mock`: For mocking in tests
+- `pre-commit`: For git hooks
 - `bandit`: For security checks
 - `watchdog`: For file watching
 - `ipykernel`: For Jupyter support

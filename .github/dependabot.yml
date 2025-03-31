@@ -3,15 +3,30 @@ updates:
   - package-ecosystem: 'pip'
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'daily'
     open-pull-requests-limit: 10
     target-branch: 'main'
     labels:
       - 'dependencies'
       - 'automated'
-    allow:
-      - dependency-type: 'all'
+      - 'uv'
+    groups:
+      dev-dependencies:
+        patterns:
+          - 'pytest*'
+          - 'ruff'
+          - 'mypy'
+          - 'bandit'
+      production-dependencies:
+        patterns:
+          - 'pydantic'
+          - 'python-dotenv'
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
     versioning-strategy: 'auto'
     commit-message:
       prefix: 'deps'
       include: 'scope'
+    reviewers:
+      - 'jagreehal'

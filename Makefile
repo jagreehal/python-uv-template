@@ -3,8 +3,15 @@
 # Use Python 3.12
 PYTHON := python3.12
 VENV := .venv
-BIN := $(VENV)/bin
-UV := $(BIN)/uv
+
+# Set BIN and UV variables based on operating system
+ifeq ($(OS),Windows_NT)
+    BIN := $(VENV)/Scripts
+    UV := $(BIN)/uv.exe
+else
+    BIN := $(VENV)/bin
+    UV := $(BIN)/uv
+endif
 
 install:
 	@echo "Installing dependencies using uv..."

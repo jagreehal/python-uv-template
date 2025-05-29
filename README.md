@@ -31,7 +31,7 @@ Perfect for both new projects and as a reference for modernizing existing Python
 - 🔄 GitHub Actions CI pipeline with merge checks
 - 📝 Jupyter Notebook support
 - 👀 File watching for development
-- 🛠️ Comprehensive Makefile for common tasks
+- 🛠️ Makefile for common tasks
 - 🎯 Example code demonstrating Python best practices:
   - Type hints and Pydantic models
   - Custom exception handling
@@ -70,6 +70,13 @@ Perfect for both new projects and as a reference for modernizing existing Python
 
 ## Usage Examples
 
+### Discover All Commands
+
+```bash
+make           # Shows all available commands with descriptions (colorized)
+make help      # Same as above
+```
+
 ### Basic Development Workflow
 
 ```bash
@@ -80,6 +87,8 @@ make format
 make lint
 # Run tests
 make test
+# Run all checks (format, lint, type-check, test, security)
+make check
 # Watch a file during development
 make watch-file file=src/main.py
 ```
@@ -104,7 +113,7 @@ make lint
 make type-check
 make security-check
 # Or run everything at once
-make all
+make check
 ```
 
 ### Environment Setup
@@ -128,24 +137,40 @@ make update-deps
 make install-extras
 ```
 
+### Other Useful Commands
+
+```bash
+make reinstall         # Clean and reinstall everything
+make requirements      # Export requirements.txt from lock file
+make venv              # Create the virtual environment only
+make coverage          # Open the HTML coverage report
+make doctor            # Diagnose common environment issues
+```
+
 ## Development Commands
 
-| Command                                    | Description                     | When to Use                                                |
-| ------------------------------------------ | ------------------------------- | ---------------------------------------------------------- |
-| `make install`                             | Install dependencies            | Initial setup and after pulling changes                    |
-| `make install-extras`                      | Install optional packages       | When you need logging (loguru) or debugging (icecream)     |
-| `make format`                              | Format code and fix lint issues | Before creating a pull request                             |
-| `make lint`                                | Check code with ruff            | To verify code quality locally                             |
-| `make lint-fix`                            | Auto-fix linting issues         | To automatically fix style issues                          |
-| `make test`                                | Run tests with coverage         | After making changes (generates coverage reports)          |
-| `make test-watch file=src/test_example.py` | Auto-run tests on changes       | During TDD (replace test_example.py with target test file) |
-| `make type-check`                          | Run MyPy type checker           | To verify type safety locally                              |
-| `make security-check`                      | Run security audit              | Before deployments                                         |
-| `make update-deps`                         | Update dependencies             | When you want to upgrade packages                          |
-| `make check-env`                           | Verify environment variables    | Before running the application                             |
-| `make watch-file file=src/your_script.py`  | Auto-run file on changes        | During active development                                  |
-| `make clean`                               | Remove generated files          | To start fresh                                             |
-| `make all`                                 | Run complete pipeline           | To verify all checks locally                               |
+| Command                                    | Description                            | When to Use                                                |
+| ------------------------------------------ | -------------------------------------- | ---------------------------------------------------------- |
+| `make` or `make help`                      | Show all available commands            | Anytime you need to see available tasks                    |
+| `make install`                             | Install dependencies                   | Initial setup and after pulling changes                    |
+| `make install-extras`                      | Install optional packages              | When you need logging (loguru) or debugging (icecream)     |
+| `make format`                              | Format code and fix lint issues        | Before creating a pull request                             |
+| `make lint`                                | Check code with ruff                   | To verify code quality locally                             |
+| `make lint-fix`                            | Auto-fix linting issues                | To automatically fix style issues                          |
+| `make test`                                | Run tests with coverage                | After making changes (generates coverage reports)          |
+| `make test-watch file=src/test_example.py` | Auto-run tests on changes              | During TDD (replace test_example.py with target test file) |
+| `make type-check`                          | Run MyPy type checker                  | To verify type safety locally                              |
+| `make security-check`                      | Run security audit                     | Before deployments                                         |
+| `make update-deps`                         | Update dependencies and lock file      | When you want to upgrade packages                          |
+| `make check-env`                           | Verify environment variables           | Before running the application                             |
+| `make watch-file file=src/your_script.py`  | Auto-run file on changes               | During active development                                  |
+| `make clean`                               | Remove generated files                 | To start fresh                                             |
+| `make all` or `make check`                 | Run complete pipeline (all checks)     | To verify all checks locally                               |
+| `make reinstall`                           | Clean and reinstall everything         | If your environment is broken                              |
+| `make requirements`                        | Export requirements.txt from lock file | For tools that need requirements.txt                       |
+| `make venv`                                | Create the virtual environment only    | If you want to just create the venv                        |
+| `make coverage`                            | Open HTML coverage report              | To view test coverage in browser                           |
+| `make doctor`                              | Diagnose common environment issues     | To check Python, uv, venv, and .env status                 |
 
 ### Watch Commands Examples
 
@@ -166,12 +191,14 @@ This template follows a "commit early, commit often" philosophy while maintainin
 
 - Developers can commit and push freely to feature branches
 - Local quality tools are available but not enforced:
+
   ```bash
   make format  # Format when ready
   make lint    # Check for issues
   make test    # Run tests
   ```
-- Use `make all` to run all checks locally before creating a PR
+
+- Use `make check` or `make all` to run all checks locally before creating a PR
 
 ### CI/CD Pipeline
 

@@ -29,7 +29,7 @@ dev = [
     "watchdog>=6.0.0",
 ]
 logging = [
-    "loguru>=0.5.0,<1.0.0"
+    "loguru>=0.7.3,<1.0.0"
 ]
 debug = [
     "icecream>=2.1.3"
